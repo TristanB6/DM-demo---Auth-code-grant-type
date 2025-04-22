@@ -2,6 +2,9 @@
 
 A simple demonstration of the Authorization Code grant type auth method in a client-side application.
 
+## Live Demo
+Try it out: [https://tristanb6.github.io/DM-demo---Auth-code-grant-type/](https://tristanb6.github.io/DM-demo---Auth-code-grant-type/)
+
 ## Features
 
 - Access token
