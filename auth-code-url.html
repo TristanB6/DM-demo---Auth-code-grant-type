@@ -3,22 +3,19 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Auth code url</title>
+    <title>Auth Code URL</title>
+    <script type="module" src="/src/main.js"></script>
 </head>
 <body>
-    <script type="module">
-        import '/src/style.css';
-        
-        // retrieve auth code from url params
-        const urlParams = new URLSearchParams(window.location.search);
-        const authCode = urlParams.get("code");
-        console.log(authCode);
-        setTimeout(()=>{
-            window.location.href = `http://localhost:5173?code=${authCode}`;
-        },3000);
-      
-
+    <div id="app">
+        <h1>Auth Code URL</h1>
+        <a id="auth-code-url" href="#">Connect with Dailymotion</a>
+    </div>
+    <script>
+        // Get the current URL and redirect to the main page
+        const currentUrl = window.location.href;
+        const mainPageUrl = currentUrl.replace('auth-code-url.html', '');
+        window.location.href = mainPageUrl;
     </script>
-    
 </body>
 </html>

@@ -17,7 +17,7 @@ const public_API_key_secret = import.meta.env.VITE_public_API_key_secret;
  ***********************************/
 
 /**********  Setup generation of auth code ******/
-const callback_URI = "http://localhost:5173/auth-code-url.html";
+const callback_URI = import.meta.env.VITE_callback_URL || "http://localhost:5173/auth-code-url.html";
 let auth_URL = `https://api.dailymotion.com/oauth/authorize?response_type=code&client_id=${public_API_key}&redirect_uri=${callback_URI}&scope=userinfo+read+manage_videos+email`;
 document.querySelector('#auth-code-url').href = auth_URL;
 
@@ -25,55 +25,58 @@ document.querySelector('#auth-code-url').href = auth_URL;
 const urlParams = new URLSearchParams(window.location.search);
 const auth_code = urlParams.get("code");
 
-if(auth_code){
-  console.log('Auth code detected, requesting access token');
+// Wrap the async code in an immediately invoked async function
+(async () => {
+  if(auth_code){
+    console.log('Auth code detected, requesting access token');
 
-  let access_token_URL = `https://api.dailymotion.com/oauth/token`;
-  try {
-    const response = await fetch(access_token_URL,{
-      method:"POST",
-      mode : "cors", // use Moesif Origin chrome extension to enable CORS on localhost
-      headers: {
-        "Content-Type": "application/x-www-form-urlencoded",
-      },
-      body: new URLSearchParams({
-        grant_type:"authorization_code",
-        client_id: public_API_key,
-        client_secret: public_API_key_secret,
-        redirect_uri: callback_URI,
-        code: auth_code,
-        // scope:["userinfo" ,"manage_videos" ,"email", "read" ,"write"], // need it in the auth_URL too
-      }),
-    });
-    if (!response.ok) {
-      throw new Error(`Response status: ${response.status}`);
-    }
-    const json = await response.json();
-    console.log(json);
+    let access_token_URL = `https://api.dailymotion.com/oauth/token`;
+    try {
+      const response = await fetch(access_token_URL,{
+        method:"POST",
+        mode : "cors", // use Moesif Origin chrome extension to enable CORS on localhost
+        headers: {
+          "Content-Type": "application/x-www-form-urlencoded",
+        },
+        body: new URLSearchParams({
+          grant_type:"authorization_code",
+          client_id: public_API_key,
+          client_secret: public_API_key_secret,
+          redirect_uri: callback_URI,
+          code: auth_code,
+          // scope:["userinfo" ,"manage_videos" ,"email", "read" ,"write"], // need it in the auth_URL too
+        }),
+      });
+      if (!response.ok) {
+        throw new Error(`Response status: ${response.status}`);
+      }
+      const json = await response.json();
+      console.log(json);
 
-    // Check if tokens were successfully received
-    if (json.access_token && json.refresh_token && json.expires_in) {
-      // Store tokens in localStorage
-      localStorage.setItem("auth_code_access_token", json.access_token);
-      localStorage.setItem("auth_code_refresh_token", json.refresh_token);
-      localStorage.setItem("auth_code_scope", json.scope);
+      // Check if tokens were successfully received
+      if (json.access_token && json.refresh_token && json.expires_in) {
+        // Store tokens in localStorage
+        localStorage.setItem("auth_code_access_token", json.access_token);
+        localStorage.setItem("auth_code_refresh_token", json.refresh_token);
+        localStorage.setItem("auth_code_scope", json.scope);
+        
+        // Calculate the new expiration time
+        const expirationTime = Date.now() + json.expires_in * 1000; // expires_in is in seconds
+        localStorage.setItem("auth_code_expires_at", expirationTime);
+
+        console.log('Tokens saved to localStorage');
+      } else {
+        console.error('Tokens not found in response');
+      }
+      //redirect the user to a clean url
+      window.location.href = `http://localhost:5173`;
+
       
-      // Calculate the new expiration time
-      const expirationTime = Date.now() + json.expires_in * 1000; // expires_in is in seconds
-      localStorage.setItem("auth_code_expires_at", expirationTime);
-
-      console.log('Tokens saved to localStorage');
-    } else {
-      console.error('Tokens not found in response');
+    } catch (error) {
+      console.error(error);
     }
-    //redirect the user to a clean url
-    // window.location.href = `http://localhost:5173`;
-
-    
-  } catch (error) {
-    console.error(error);
   }
-}
+})();
 
 /**********  Function to display tokens on the frontend ******/
 // Function to display tokens on the frontend and update the remaining expiration time dynamically
@@ -169,7 +172,7 @@ document.querySelector('#auth-code-refresh-access-token').addEventListener('clic
         console.error('Tokens not found in response');
       }
       //redirect the user to a clean url
-      // window.location.href = `http://localhost:5173`;
+      window.location.href = `http://localhost:5173`;
     } catch (error) {
       console.error(error);
     }
