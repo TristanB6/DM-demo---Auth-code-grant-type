@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Auth Code URL</title>
+  <script type="module" crossorigin src="/DM-demo---Auth-code-grant-type/assets/main-roM4Bs6Z.js"></script>
+  <link rel="stylesheet" crossorigin href="/DM-demo---Auth-code-grant-type/assets/main-Dihv656B.css">
+</head>
+<body>
+    <div id="app">
+        <h1>Auth Code URL</h1>
+        <a id="auth-code-url" href="#">Connect with Dailymotion</a>
+    </div>
+    <script>
+        // Get the current URL and redirect to the main page
+        const currentUrl = window.location.href;
+        const mainPageUrl = currentUrl.replace('auth-code-url.html', '');
+        window.location.href = mainPageUrl;
+    </script>
+</body>
+</html>
