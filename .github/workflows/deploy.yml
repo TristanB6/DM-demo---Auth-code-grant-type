@@ -26,12 +26,18 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
+      - name: List files before build
+        run: ls -la
+
       - name: Build
         run: npm run build
         env:
           VITE_public_API_key: ${{ secrets.VITE_PUBLIC_API_KEY }}
           VITE_public_API_key_secret: ${{ secrets.VITE_PUBLIC_API_KEY_SECRET }}
           VITE_callback_URL: ${{ secrets.VITE_CALLBACK_URL }}
+
+      - name: List files after build
+        run: ls -la
 
       - name: Setup Pages
         uses: actions/configure-pages@v2
