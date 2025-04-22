@@ -61,17 +61,17 @@ const auth_code = urlParams.get("code");
         localStorage.setItem("auth_code_scope", json.scope);
         
         // Calculate the new expiration time
-        const expirationTime = Date.now() + json.expires_in * 1000; // expires_in is in seconds
+        const expirationTime = Date.now() + json.expires_in * 1000;
         localStorage.setItem("auth_code_expires_at", expirationTime);
 
         console.log('Tokens saved to localStorage');
+        
+        // Redirect to main page using the callback URL without the auth-code-url.html part
+        const mainPageUrl = callback_URI.replace('auth-code-url.html', '');
+        window.location.href = mainPageUrl;
       } else {
         console.error('Tokens not found in response');
       }
-      //redirect the user to a clean url
-      window.location.href = `http://localhost:5173`;
-
-      
     } catch (error) {
       console.error(error);
     }
@@ -164,15 +164,17 @@ document.querySelector('#auth-code-refresh-access-token').addEventListener('clic
         localStorage.setItem("auth_code_scope", json.scope);
         
         // Calculate the new expiration time
-        const expirationTime = Date.now() + json.expires_in * 1000; // expires_in is in seconds
+        const expirationTime = Date.now() + json.expires_in * 1000;
         localStorage.setItem("auth_code_expires_at", expirationTime);
   
         console.log('Tokens saved to localStorage');
+        
+        // Redirect to main page using the callback URL without the auth-code-url.html part
+        const mainPageUrl = callback_URI.replace('auth-code-url.html', '');
+        window.location.href = mainPageUrl;
       } else {
         console.error('Tokens not found in response');
       }
-      //redirect the user to a clean url
-      window.location.href = `http://localhost:5173`;
     } catch (error) {
       console.error(error);
     }
