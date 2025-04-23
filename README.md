@@ -1,13 +1,31 @@
 # Dailymotion Authorization Code grant type
 
-A simple demonstration of the Authorization Code grant type auth method in a client-side application.
+A simple demonstration of the Authorization Code grant type auth method in a client-side application. This demo shows how to obtain an access token on behalf of a Dailymotion user, allowing your application to make API requests with their permissions.
+
+## Purpose and Use Case
+
+This authorization flow is particularly useful when you need to:
+- Access a user's Dailymotion data (like their videos, playlists, or channel information)
+- Perform actions on behalf of the user (like uploading videos or managing their content)
+- Create integrations that require user-specific permissions
+
+For example, imagine you're building a video management dashboard where users can:
+- View their Dailymotion upload statistics
+- Schedule video uploads
+- Manage their playlists
+- Monitor their channel performance
+
+In this case, you would need the user's permission to access their Dailymotion account. The authorization flow demonstrated here allows you to:
+1. Request the user's permission through Dailymotion's login page
+2. Obtain an access token that represents their authorization
+3. Use this token to make API requests on their behalf
 
 ## Live Demo
 Try it out: [https://tristanb6.github.io/DM-demo---Auth-code-grant-type/](https://tristanb6.github.io/DM-demo---Auth-code-grant-type/)
 
 ## Features
 
-- Access token
+- Access token.
 - Refresh token
 - Token expiration countdown
 - Scopes
@@ -46,7 +64,7 @@ Try it out: [https://tristanb6.github.io/DM-demo---Auth-code-grant-type/](https:
   - The permissions (scopes) your app needs
 
 ### 2. User Authentication
-- When a user clicks the "Connect with Dailymotion" button, they are redirected to Dailymotion's login page
+- When a user clicks the "Generate access token" button, they are redirected to Dailymotion's login page
 - The user must:
   - Log in to their Dailymotion account (or create one if they don't have it)
   - Review and approve the permissions your app is requesting
@@ -84,14 +102,22 @@ Try it out: [https://tristanb6.github.io/DM-demo---Auth-code-grant-type/](https:
 - This happens automatically without requiring the user to log in again
 - The new tokens are stored and displayed just like the original ones
 
-## Security Note
-
-This is a demo application using client-side OAuth implementation. For production use:
-- Consider implementing server-side token exchange
-- Use proper environment variable management
-- Implement additional security measures
 
 
-## Disclaimer
+## ⚠️ Important Security Warning
 
-This is a demo application. The API keys used are for demonstration purposes only. For production applications, implement proper server-side authentication and security measures. 
+**This is a demo application only and should NOT be used in production.**
+
+The current implementation is client-side only, which means:
+- All requests to the Dailymotion API are visible in the browser's network tab
+- The public API key and secret are exposed in the client-side code
+- This setup is not secure and should never be used in production
+
+**Important Note for Partners:**
+- We do not recommend using this template as-is for production applications
+- If you want to use this as inspiration, you MUST implement a server-side component to:
+  - Securely handle API keys
+  - Manage token exchange
+  - Protect sensitive credentials
+
+For production applications, always implement proper server-side authentication and security measures.
