@@ -14,7 +14,7 @@ Try it out: [https://tristanb6.github.io/DM-demo---Auth-code-grant-type/](https:
 
 ## Prerequisites
 
-- A Dailymotion account
+- A Dailymotion account.
 - API credentials (public key and secret + callback URL)
 - Node.js and npm installed
 
